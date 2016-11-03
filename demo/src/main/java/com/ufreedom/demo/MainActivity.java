@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         floating = new Floating(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -49,27 +50,31 @@ public class MainActivity extends AppCompatActivity {
             localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
         }
 
-        screenWidth = UIUtils.getScreenWidth(this);
+        screenWidth  = UIUtils.getScreenWidth(this);
         screenHeight = UIUtils.getScreenWidth(this);
+
         initLayout();
     }
 
     private void initLayout() {
-        
-        int margin = UIUtils.dip2px(this,15);
-        int w = screenWidth - margin * 2;
-        int h = (int) (w * 0.53f);
-        
+
+        int margin  = UIUtils.dip2px(this, 15);
+        int w       = screenWidth - margin * 2;
+        int h       = (int) (w * 0.53f);
+
+        // 自行车RootView
         RelativeLayout bikeRootView = (RelativeLayout) findViewById(R.id.itemBikeContainerView);
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) bikeRootView.getLayoutParams();
-        layoutParams.width = w;
+        layoutParams.width  = w;
         layoutParams.height = h;
-        
+
+        // 闹钟RootView
         RelativeLayout clockRootView = (RelativeLayout) findViewById(R.id.itemClockContainerView);
         RelativeLayout.LayoutParams clockRootViewLayoutParams = (RelativeLayout.LayoutParams) clockRootView.getLayoutParams();
-        clockRootViewLayoutParams.width = w;
+        clockRootViewLayoutParams.width  = w;
         clockRootViewLayoutParams.height = h;
-        
+
+        // 飞机
         icPlaneView = findViewById(R.id.icPlane);
         icPlaneView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 纸飞机(漂浮纸飞机)
         icPaperAirPlaneView = findViewById(R.id.icPaperAirPlane);
         icPaperAirPlaneView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +110,8 @@ public class MainActivity extends AppCompatActivity {
                 floating.startFloating(floatingElement);
             }
         });
-        
+
+        // 命令窗口（漂浮文本）
         View icCommandLineView = findViewById(R.id.icCommandLine);
         icCommandLineView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +128,8 @@ public class MainActivity extends AppCompatActivity {
                 floating.startFloating(floatingElement);
             }
         });
-        
+
+        // 点赞（点赞+122）
         View icLikeView = findViewById(R.id.icLike);
         icLikeView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,12 +140,13 @@ public class MainActivity extends AppCompatActivity {
                         .floatingTransition(new TranslateFloatingTransition())
                         .build();
                 floating.startFloating(floatingElement);
-                
+
             }
         });
-        
-        
-        final View icStarView  = findViewById(R.id.icStar);
+
+
+        // 星星
+        final View icStarView = findViewById(R.id.icStar);
         icStarView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -151,8 +160,8 @@ public class MainActivity extends AppCompatActivity {
                         .targetView(imageView)
                         .floatingTransition(new StarFloating())
                         .build();
-                
-                SpringHelper.createWidthBouncinessAndSpeed(0f,1f,11,15).reboundListener(new ReboundListener() {
+
+                SpringHelper.createWidthBouncinessAndSpeed(0f, 1f, 11, 15).reboundListener(new ReboundListener() {
                     @Override
                     public void onReboundUpdate(double currentValue) {
                         v.setScaleX((float) currentValue);
@@ -164,14 +173,13 @@ public class MainActivity extends AppCompatActivity {
                         floating.startFloating(floatingElement);
                     }
                 }).start();
-                
-                
-                
+
+
             }
         });
-        
-        
-        final View icBeerView  = findViewById(R.id.icBeer);
+
+
+        final View icBeerView = findViewById(R.id.icBeer);
         icBeerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /** 自定义 飞机 动画 **/
     class PlaneFloating extends BaseFloatingPathTransition {
 
         @Override
@@ -202,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void applyFloating(final YumFloating yumFloating) {
-            
+
             ValueAnimator translateAnimator = ObjectAnimator.ofFloat(getStartPathPosition(), getEndPathPosition());
             translateAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
@@ -224,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                     yumFloating.clear();
                 }
             });
-            
+
 
             SpringHelper.createWidthBouncinessAndSpeed(0.0f, 1.0f, 14, 15)
                     .reboundListener(new SimpleReboundListener() {
@@ -239,13 +248,13 @@ public class MainActivity extends AppCompatActivity {
             translateAnimator.start();
         }
     }
-    
+
     class StarFloating implements FloatingTransition {
 
         @Override
         public void applyFloating(final YumFloating yumFloating) {
-            SpringHelper.createWidthBouncinessAndSpeed(0.0f, 1.0f,10, 15)
-                    .reboundListener(new SimpleReboundListener(){
+            SpringHelper.createWidthBouncinessAndSpeed(0.0f, 1.0f, 10, 15)
+                    .reboundListener(new SimpleReboundListener() {
                         @Override
                         public void onReboundUpdate(double currentValue) {
                             yumFloating.setScaleX((float) currentValue);
@@ -285,17 +294,17 @@ public class MainActivity extends AppCompatActivity {
             translateAnimator.start();
         }
     }
-    
-    
-    class BeerFloating extends BaseFloatingPathTransition{
 
-        
+
+    class BeerFloating extends BaseFloatingPathTransition {
+
+
         @Override
         public FloatingPath getFloatingPath() {
             Path path = new Path();
-            path.rLineTo(-100,0);
-            path.quadTo(0,-200,100,0);
-            path.quadTo(0,200,-100,0);
+            path.rLineTo(-100, 0);
+            path.quadTo(0, -200, 100, 0);
+            path.quadTo(0, 200, -100, 0);
             return FloatingPath.create(path, false);
         }
 
@@ -313,9 +322,9 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-           
 
-            ValueAnimator alphaAnimation = ObjectAnimator.ofFloat(1f,0f);
+
+            ValueAnimator alphaAnimation = ObjectAnimator.ofFloat(1f, 0f);
             alphaAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
