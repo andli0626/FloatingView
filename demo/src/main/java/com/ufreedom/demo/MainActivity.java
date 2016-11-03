@@ -151,6 +151,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(final View v) {
 
+/** 默认动画 **/
+//                ImageView imageView = new ImageView(MainActivity.this);
+//                imageView.setLayoutParams(new ViewGroup.LayoutParams(icPaperAirPlaneView.getMeasuredWidth(), icPaperAirPlaneView.getMeasuredHeight()));
+//                imageView.setImageResource(R.drawable.star_floating);
+//
+//                FloatingElement floatingElement = new FloatingBuilder()
+//                        .anchorView(v)
+//                        .targetView(imageView)
+//                        .floatingTransition(new TranslateFloatingTransition())
+//                        .build();
+//                floating.startFloating(floatingElement);
+
+
+/** 漂浮文本 **/
+//                TextView textView = new TextView(MainActivity.this);
+//                textView.setText("收藏成功!");
+//
+//                FloatingElement floatingElement = new FloatingBuilder()
+//                        .anchorView(v)
+//                        .targetView(textView)
+//                        .offsetY(-v.getMeasuredHeight())
+//                        .floatingTransition(new ScaleFloatingTransition())
+//                        .build();
+//                floating.startFloating(floatingElement);
+
+/** 自定义动画 **/
                 ImageView imageView = new ImageView(MainActivity.this);
                 imageView.setLayoutParams(new ViewGroup.LayoutParams(icStarView.getMeasuredWidth(), icStarView.getMeasuredHeight()));
                 imageView.setImageResource(R.drawable.star_floating);
